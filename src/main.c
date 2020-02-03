@@ -10,7 +10,6 @@ int main(int argc, char **argv){
                 return 0;
         }
         if(strcmp(argv[1],"generate") == 0){
-                printf("generate...\n");
 		int size = 8;
 		if(argc > 2) size = atoi(argv[2]);
                 printf("password is: %s\n",generate(size > 8 ? size : 8));
