@@ -10,17 +10,17 @@ char* generate(int size){
 
 	while(!strong){
 		for(int i = 0 ; i < size ; i++){
-			password[i] = 33 + rand() % 94;
+			password[i] = FIRST_SYMBOL + rand() % ALPHABET_SIZE;
 		}
 
 		char HasNum = 0 , HasUpper = 0 , HasLower = 0 , HasSpec = 0;
 
 		for(int i = 0 ; i < size ; i++){
-			if(64 < password[i] && password[i] < 91)	HasUpper = 1;
+			if(isupper(password[i]))	HasUpper = 1;
 			else
-			if(96 < password[i] && password[i] < 123)	HasLower = 1;
+			if(islower(password[i]))	HasLower = 1;
 			else
-			if(47 < password[i] && password[i] < 58)	HasNum = 1;
+			if(isdigit(password[i]))	HasNum = 1;
 			else
 				HasSpec = 1;
 		}
