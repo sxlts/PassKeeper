@@ -15,7 +15,7 @@ char* generate(int size){
 
 	while(!strong){
 		for(int i = 0 ; i < size ; i++){
-			password[i] = FIRST_SYMBOL + randombytes_uniform(94);
+			password[i] = FIRST_SYMBOL + randombytes_uniform(ALPHABET_SIZE);
 		}
 
 		char HasDigit = 0 , HasUpper = 0 , HasLower = 0 , HasSpec = 0;
