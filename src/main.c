@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 void PrintHelp(){
-       printf("Usage:\n		generate [size] [name]\n	ecrypt\n	exit\n");
+       printf("Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n");
 }
 
 int main(int argc, char **argv){
@@ -21,33 +21,11 @@ int main(int argc, char **argv){
 		if(argc > 2) size = atoi(argv[2]);
                 printf("password is: %s\n",generate(size > 8 ? size : 8));
         }
-	if(strcmp(argv[1],"encrypt") == 0){
-		char *temp;
-
-	        temp = getpass("give password:\n");
-		char *Pass;
-		Pass = malloc(strlen(temp));
-		strcpy(Pass , temp);
-
-		temp = getpass("give key:\n");
-		char *Key;
-		Key = malloc(strlen(temp));
-		strcpy(Key , temp);
-
-		printf("[DEBUG]: %s , %s \n" , Pass , Key);
-
-		printf("encrypted pass is:\n");
-		for(int i = 0 ; i < strlen(Pass) ; i ++){
-			printf("%c" , *(encrypt(Pass,Key) + i));
-		}
-		printf("\n");
-
-	}
 	if(strcmp(argv[1],"save") == 0){
-		char* FilePath;
+		char* FilePath = "";
 		char* PassName = malloc(50);
-		char* Pass;
-		char* EncryptionKey;
+		char* Pass = "";
+		char* EncryptionKey = "";
 		if(argc > 2){
 			FilePath = malloc(strlen(argv[2]));
 			strcpy(FilePath , argv[2]);
@@ -56,14 +34,16 @@ int main(int argc, char **argv){
 			scanf("%s" , PassName);
 
 			char* temp;
-
-			temp = getpass("give password:\n");
-			Pass = malloc(strlen(temp));
-			strcpy(Pass , temp);
-	
-			temp = getpass("give key:\n");
-			EncryptionKey = malloc(strlen(temp));
-			strcpy(EncryptionKey , temp);
+			while(strlen(Pass) == 0){
+	        		temp = getpass("give password:\n");
+				Pass = malloc(strlen(temp));
+				strcpy(Pass , temp);
+			}
+			while(strlen(EncryptionKey) == 0){
+				temp = getpass("give key:\n");
+				EncryptionKey = malloc(strlen(temp));
+				strcpy(EncryptionKey , temp);
+			}
 
 			printf("[DEBUG]: %s , %s , %s , %s\n" , FilePath , PassName , Pass , EncryptionKey);
 
@@ -81,17 +61,18 @@ int main(int argc, char **argv){
 
 	}
 	if(strcmp(argv[1],"read") == 0){
-		char* FilePath;
-		char* EncryptionKey;
+		char* FilePath = "";
+		char* EncryptionKey = "";
 		if(argc > 2){
 			FilePath = malloc(strlen(argv[2]));
 			strcpy(FilePath , argv[2]);
 
 			char* temp;
-
-			temp = getpass("give key:\n");
-			EncryptionKey = malloc(strlen(temp));
-			strcpy(EncryptionKey , temp);
+			while(strlen(EncryptionKey) == 0){
+				temp = getpass("give key:\n");
+				EncryptionKey = malloc(strlen(temp));
+				strcpy(EncryptionKey , temp);
+			}
 
 			if(READ(FilePath , EncryptionKey) == 0){
 				printf("success!\n");
