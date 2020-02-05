@@ -3,7 +3,7 @@
 int SAVE(char* FilePath , char* PassName , char* Pass , char* EncryptionKey){
 	FILE *file;
 
-	file = fopen(FilePath , "wb");
+	file = fopen(FilePath , "ab+");
 	if(file == NULL){
 		return 1;
 	}
@@ -39,32 +39,31 @@ int READ(char* FilePath , char* EncryptionKey){
 	if(file == NULL){
 		return 1;
 	}
-
 	unsigned int StringLength;
-       	fread(&StringLength , sizeof(int) , 1 , file);
-	
-	char* line = malloc(StringLength);
-	fread(line , sizeof(char) , StringLength , file);	
-	
-	fclose(file);
+	while(fread(&StringLength , sizeof(int) , 1 , file)){
+		char* line = malloc(StringLength);
+		if(fread(line , sizeof(char) , StringLength , file) < StringLength) return 2;	
+		
+		char key = 0;
+		unsigned int KeyCounter = 0;
 
-	char key = 0;
-	unsigned int KeyCounter = 0;
+		for(int i = 0 ; i < StringLength ; i++){
+			if(!key)
+				printf("%c" , line[i]);
+			else{
+				printf("%c" , line[i]^EncryptionKey[KeyCounter%strlen(EncryptionKey)]);
+				KeyCounter++;
+			}
 
-	for(int i = 0 ; i < StringLength ; i++){
-		if(!key)
-			printf("%c" , line[i]);
-		else{
-			printf("%c" , line[i]^EncryptionKey[KeyCounter%strlen(EncryptionKey)]);
-			KeyCounter++;
+			if(line[i] == ':') {
+				key = 1;
+			}
 		}
-
-		if(line[i] == ':') {
-			key = 1;
-		}
+		
+		printf("\n");
 	}
-	
-	printf("\n");
+
+	fclose(file);
 
 	return 0;
 }
