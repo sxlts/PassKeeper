@@ -76,8 +76,34 @@ int main(int argc, char **argv){
 		}
 		else{
 			PrintHelp();
+			return 0;
 		}
 
+	}
+	if(strcmp(argv[1],"read") == 0){
+		char* FilePath;
+		char* EncryptionKey;
+		if(argc > 2){
+			FilePath = malloc(strlen(argv[2]));
+			strcpy(FilePath , argv[2]);
+
+			char* temp;
+
+			temp = getpass("give key:\n");
+			EncryptionKey = malloc(strlen(temp));
+			strcpy(EncryptionKey , temp);
+
+			if(READ(FilePath , EncryptionKey) == 0){
+				printf("success!\n");
+			}
+			else{
+				printf("error!\n");
+			}
+		}
+		else{
+			PrintHelp();
+			return 0;
+		}
 	}
         return 0;
 }

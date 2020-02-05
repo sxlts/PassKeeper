@@ -21,7 +21,9 @@ int SAVE(char* FilePath , char* PassName , char* Pass , char* EncryptionKey){
 	fwrite(&parser , sizeof(char) , 1 , file);
 
 	//write encrypted pass
-	char* temp = encrypt(Pass , EncryptionKey);
+	char* temp;
+       	temp = malloc(strlen(Pass));
+       	strcpy(temp , encrypt(Pass , EncryptionKey));
 	for(int i = 0 ; i < strlen(Pass) ; i++){
 		char byte = temp[i];
 		fwrite(&byte , sizeof(char) , 1 , file);
@@ -43,13 +45,13 @@ int READ(char* FilePath , char* EncryptionKey){
 	
 	char* line = malloc(StringLength);
 	fread(line , sizeof(char) , StringLength , file);	
-
+	
 	fclose(file);
 
 	char key = 0;
 	unsigned int KeyCounter = 0;
 
-	for(int i = 0 ; i < strlen(line) ; i++){
+	for(int i = 0 ; i < StringLength ; i++){
 		if(!key)
 			printf("%c" , line[i]);
 		else{
@@ -61,6 +63,8 @@ int READ(char* FilePath , char* EncryptionKey){
 			key = 1;
 		}
 	}
+	
+	printf("\n");
 
 	return 0;
 }
