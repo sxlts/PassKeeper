@@ -18,7 +18,7 @@ char* generate(int size){
 			password[i] = FIRST_SYMBOL + randombytes_uniform(ALPHABET_SIZE);
 		}
 
-		char HasDigit = 0 , HasUpper = 0 , HasLower = 0 , HasSpec = 0;
+		char HasDigit = 0, HasUpper = 0, HasLower = 0, HasSpec = 0;
 
 		for(int i = 0 ; i < size ; i++){
 			if(isupper(password[i]))	HasUpper = 1;

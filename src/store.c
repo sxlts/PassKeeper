@@ -1,9 +1,9 @@
 #include "store.h"
 
-int SAVE(char* FilePath , char* PassName , char* Pass , char* EncryptionKey){
+int SAVE(char* FilePath, char* PassName, char* Pass, char* EncryptionKey){
 	FILE *file;
 
-	file = fopen(FilePath , "ab+");
+	file = fopen(FilePath, "ab+");
 	if(file == NULL){
 		return 1;
 	}
@@ -11,27 +11,27 @@ int SAVE(char* FilePath , char* PassName , char* Pass , char* EncryptionKey){
 	unsigned int PassLength = strlen(Pass);
 	
 	//write length of string for reading
-	fwrite(&PassLength , sizeof(unsigned int) , 1 , file);	
+	fwrite(&PassLength, sizeof(unsigned int), 1, file);
 	
 	//write passname
-	fwrite(PassName , sizeof(char) , strlen(PassName) , file);
+	fwrite(PassName, sizeof(char), strlen(PassName), file);
 	
 	//write parser
 	char parser = ':';
-	fwrite(&parser , sizeof(char) , 1 , file);
+	fwrite(&parser, sizeof(char), 1, file);
 
 	for(int i = 0 ; i < strlen(Pass) ; i++){
 		char byte = Pass[i] ^ EncryptionKey[i % strlen(EncryptionKey)];
-		fwrite(&byte , sizeof(char) , 1 , file);
+		fwrite(&byte, sizeof(char), 1, file);
 	}
 
 	return 0;
 }
 
-int READ(char* FilePath , char* EncryptionKey){
+int READ(char* FilePath, char* EncryptionKey){
 	FILE *file;
 
-	file = fopen(FilePath , "rb");
+	file = fopen(FilePath, "rb");
 	if(file == NULL){
 		return 1;
 	}
@@ -39,19 +39,19 @@ int READ(char* FilePath , char* EncryptionKey){
 
 	printf("\n");
 
-	while(fread(&StringLength , sizeof(int) , 1 , file)){
+	while(fread(&StringLength, sizeof(int), 1, file)){
 		char* line = malloc(StringLength);	
 		
 		char byte = '0';
 
 		while(byte != ':'){
-			fread(&byte , sizeof(char) , 1 , file);
-			printf("%c" , byte);
+			fread(&byte, sizeof(char), 1, file);
+			printf("%c", byte);
 		}
 		for(int i = 0 ; i < StringLength ; i++){
-			fread(&byte , sizeof(char) , 1 , file);
+			fread(&byte, sizeof(char), 1, file);
 			byte = byte ^ EncryptionKey[i % strlen(EncryptionKey)];
-			printf("%c" , byte);
+			printf("%c", byte);
 		}
 		printf("\n");
 	}
