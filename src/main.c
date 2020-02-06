@@ -13,7 +13,7 @@ void PrintHelp(){
        printf(YEL "Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n" RESET);
 }
 
-void Save_Main(int argc, char **argv, char flag, char* GeneratedPass){
+void Save_Main(char flag, char* GeneratedPass){
 	char* FilePath = malloc(256);
 	char* PassName = malloc(50);
 	char* Pass = "";
@@ -52,7 +52,7 @@ void Save_Main(int argc, char **argv, char flag, char* GeneratedPass){
 	}
 }
 
-void Read_Main(int argc, char **argv){
+void Read_Main(){
 	char* FilePath = malloc(256);
 	char* EncryptionKey = "";
 
@@ -93,7 +93,7 @@ void Generate_Main(int argc, char **argv){
 	scanf("%c", &answer);
 
 	if(answer == 'Y' || answer == 'y'){
-		Save_Main(argc, argv, PASS, Pass);
+		Save_Main(PASS, Pass);
 	}
 }
 
@@ -106,7 +106,7 @@ int main(int argc, char **argv){
 		Generate_Main(argc, argv);
         }
 	if(strcmp(argv[1],"save") == 0){
-		Save_Main(argc, argv, NEW, "");
+		Save_Main(NEW, "");
 	}
 	if(strcmp(argv[1],"read") == 0){
 		Read_Main(argc, argv);
