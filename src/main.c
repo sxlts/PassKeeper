@@ -18,7 +18,7 @@ const char PASS = 1;
 #define RESET "\x1B[0m"
 
 void PrintHelp(){
-       printf("Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n");
+       printf(YEL "Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n" RESET);
 }
 
 void Save_Main(int argc, char **argv , char flag , char* GeneratedPass){
@@ -55,10 +55,55 @@ void Save_Main(int argc, char **argv , char flag , char* GeneratedPass){
 	printf(CYN "[DEBUG]: %s , %s , %s , %s\n" RESET , FilePath , PassName , Pass , EncryptionKey);
 
 	if(SAVE(FilePath , PassName , Pass , EncryptionKey) == 0){
-		printf(GRN "	Success!\n" RESET);
+		printf(GRN "Success!\n" RESET);
 	}
 	else{
-		printf(RED "	FILE I/O ERROR!\n" RESET);
+		printf(RED "FILE I/O ERROR!\n" RESET);
+	}
+}
+
+void Read_Main(int argc, char **argv){
+	char* FilePath = malloc(256);
+	char* EncryptionKey = "";
+
+	printf(YEL "Give file path : " RESET);
+	scanf("%s" , FilePath);
+	printf("\n");
+	
+	char* temp;
+	while(strlen(EncryptionKey) == 0){
+		temp = getpass(YEL "Give key : " RESET);
+		EncryptionKey = malloc(strlen(temp));
+		strcpy(EncryptionKey , temp);
+	}
+
+	if(READ(FilePath , EncryptionKey) == 0){
+		printf(GRN "Success!\n" RESET);
+	}
+	else{
+		printf(GRN "Error!\n" RESET);
+	}
+}
+
+void Generate_Main(int argc, char **argv){
+	int size = 8;
+
+	if(argc > 2) size = atoi(argv[2]);
+
+	char* Pass;
+	char* temp = generate(size > 8 ? size : 8);
+	Pass = malloc (strlen(temp));
+	strcpy(Pass , temp);
+               
+	printf(GRN "Password is: %s\n" RESET , Pass);
+
+	printf(YEL "Do you want to save it?\n[Y]es\\[N]o\n" RESET);
+
+	char answer;
+	scanf("%c" , &answer);
+
+	if(answer == 'Y' || answer == 'y'){
+		Save_Main(argc , argv , PASS , Pass);
 	}
 }
 
@@ -69,45 +114,12 @@ int main(int argc, char **argv){
 		return 0;
         }
         if(strcmp(argv[1],"generate") == 0){
-		int size = 8;
-		if(argc > 2) size = atoi(argv[2]);
-		char* Pass;
-		char* temp = generate(size > 8 ? size : 8);
-		Pass = malloc (strlen(temp));
-		strcpy(Pass , temp);
-                
-		printf("password is: %s\n",Pass);
-
-		printf("Do you want to save it?\n[Y]es\\[N]o");
-		char answer;
-		scanf("%c" , &answer);
-		if(answer == 'Y' || answer == 'y'){
-			Save_Main(argc , argv , PASS , Pass);
-		}
+		Generate_Main(argc , argv);
         }
 	if(strcmp(argv[1],"save") == 0){
 		Save_Main(argc , argv , NEW , "");
 	}
 	if(strcmp(argv[1],"read") == 0){
-		char* FilePath = malloc(256);
-		char* EncryptionKey = "";
-		
-		printf("Give file path\n");
-		scanf("%s" , FilePath);
-
-		char* temp;
-		while(strlen(EncryptionKey) == 0){
-			temp = getpass("give key:\n");
-			EncryptionKey = malloc(strlen(temp));
-			strcpy(EncryptionKey , temp);
-		}
-
-		if(READ(FilePath , EncryptionKey) == 0){
-			printf("success!\n");
-		}
-		else{
-			printf("error!\n");
-		}
-	return 0;
+		Read_Main(argc , argv);
 	}
 }

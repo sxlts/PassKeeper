@@ -36,6 +36,9 @@ int READ(char* FilePath , char* EncryptionKey){
 		return 1;
 	}
 	unsigned int StringLength;
+
+	printf("\n");
+
 	while(fread(&StringLength , sizeof(int) , 1 , file)){
 		char* line = malloc(StringLength);	
 		
@@ -50,8 +53,10 @@ int READ(char* FilePath , char* EncryptionKey){
 			byte = byte ^ EncryptionKey[i % strlen(EncryptionKey)];
 			printf("%c" , byte);
 		}
-		printf("\n[debug] : %lu\n" , strlen(EncryptionKey));
+		printf("\n");
 	}
+
+	printf("\n");
 
 	fclose(file);
 
