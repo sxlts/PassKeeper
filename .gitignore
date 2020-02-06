@@ -4,3 +4,6 @@
 # Generated files
 build/
 *.bin
+
+# Third party libraries
+opt/
