@@ -1,5 +1,4 @@
 #include "generate.h"
-#include "encrypt.h"
 #include "store.h"
 
 #include <stdio.h>
