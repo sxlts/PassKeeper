@@ -52,8 +52,6 @@ void Save_Main(int argc, char **argv , char flag , char* GeneratedPass){
 		strcpy(EncryptionKey , temp);
 	}
 
-	printf(CYN "[DEBUG]: %s , %s , %s , %s\n" RESET , FilePath , PassName , Pass , EncryptionKey);
-
 	if(SAVE(FilePath , PassName , Pass , EncryptionKey) == 0){
 		printf(GRN "Success!\n" RESET);
 	}
@@ -108,7 +106,6 @@ void Generate_Main(int argc, char **argv){
 }
 
 int main(int argc, char **argv){
-        char *LookUp[3] = {"help" , "generate" , "exit"};
         if(argc == 1){
 		PrintHelp();
 		return 0;
