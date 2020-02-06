@@ -6,8 +6,8 @@
 #include <string.h>
 #include <unistd.h>
 
-const char NEW = 0;
-const char PASS = 1;
+#define NEW 0
+#define PASS 1
 
 void PrintHelp(){
        printf(YEL "Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n" RESET);
