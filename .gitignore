@@ -2,6 +2,5 @@
 .*.swp
 
 # Generated files
-*.o
-output
+build/
 *.bin

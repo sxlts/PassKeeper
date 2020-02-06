@@ -1,14 +1,22 @@
-output: main.o generate.o store.o  /usr/local/lib/libsodium.so 
-	gcc main.o generate.o store.o -o output -L/usr/local/lib/libsodium.so -lsodium
+SOURCE_DIR=src
+BUILD_DIR=build
+OUTPUT=passkeeper
 
-main.o: src/main.c
-	gcc -c src/main.c
+SOURCES=$(notdir $(basename $(wildcard $(SOURCE_DIR)/*.c)))
+OBJECTS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(SOURCES)))
 
-generate.o: src/generate.c src/generate.h /usr/local/lib/libsodium.so
-	gcc -c src/generate.c -L/usr/local/lib/libsodium.so -lsodium
+SODIUM_OPTIONS=-L/usr/local/lib/libsodium.so -lsodium
 
-store.o: src/store.c src/store.h
-	gcc -c src/store.c
 
+$(BUILD_DIR)/$(OUTPUT): $(OBJECTS)
+	gcc $^ -o $@ $(SODIUM_OPTIONS)
+
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c $(SOURCE_DIR)/%.h | $(BUILD_DIR)
+	gcc -c $< -o $@ $(SODIUM_OPTIONS)
+
+$(BUILD_DIR):
+	mkdir build
+
+.PHONY: clean
 clean:
-	rm *.o output
+	rm -rf $(BUILD_DIR)
