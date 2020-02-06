@@ -9,6 +9,15 @@
 const char NEW = 0;
 const char PASS = 1;
 
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
+
 void PrintHelp(){
        printf("Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n");
 }
@@ -19,35 +28,38 @@ void Save_Main(int argc, char **argv , char flag , char* GeneratedPass){
 	char* Pass = "";
 	char* EncryptionKey = "";
 	
-	printf("Give file path\n");
+	printf(YEL "Give file path : " RESET);
 	scanf("%s" , FilePath);
+	printf("\n");
 
-	printf("Give Password Name\n");
+	printf(YEL "Give Password Name : " RESET);
 	scanf("%s" , PassName);
+	printf("\n");
 
 	char* temp;
-	while(strlen(EncryptionKey) == 0){
-		temp = getpass("give key:\n");
-		EncryptionKey = malloc(strlen(temp));
-		strcpy(EncryptionKey , temp);
-	}
-	
+
 	Pass = malloc(strlen(GeneratedPass));
 	strcpy(Pass , GeneratedPass);
 
 	while(strlen(Pass) == 0 && flag == 0){
-		temp = getpass("give password:\n");
+		temp = getpass(YEL "Give password : " RESET);
 		Pass = malloc(strlen(temp));
 		strcpy(Pass , temp);
 	}
 
-	printf("[DEBUG]: %s , %s , %s , %s\n" , FilePath , PassName , Pass , EncryptionKey);
+	while(strlen(EncryptionKey) == 0){
+		temp = getpass(YEL "Give key : " RESET);
+		EncryptionKey = malloc(strlen(temp));
+		strcpy(EncryptionKey , temp);
+	}
+
+	printf(CYN "[DEBUG]: %s , %s , %s , %s\n" RESET , FilePath , PassName , Pass , EncryptionKey);
 
 	if(SAVE(FilePath , PassName , Pass , EncryptionKey) == 0){
-		printf("Success!\n");
+		printf(GRN "	Success!\n" RESET);
 	}
 	else{
-		printf("error!\n");
+		printf(RED "	FILE I/O ERROR!\n" RESET);
 	}
 }
 

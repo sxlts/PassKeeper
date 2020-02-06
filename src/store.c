@@ -8,10 +8,10 @@ int SAVE(char* FilePath , char* PassName , char* Pass , char* EncryptionKey){
 		return 1;
 	}
 	
-	unsigned int PassLength = strlen(PassName) + strlen(Pass) + 1;
+	unsigned int PassLength = strlen(Pass);
 	
 	//write length of string for reading
-	fwrite(&PassLength , sizeof(int) , 1 , file);	
+	fwrite(&PassLength , sizeof(unsigned int) , 1 , file);	
 	
 	//write passname
 	fwrite(PassName , sizeof(char) , strlen(PassName) , file);
@@ -20,12 +20,8 @@ int SAVE(char* FilePath , char* PassName , char* Pass , char* EncryptionKey){
 	char parser = ':';
 	fwrite(&parser , sizeof(char) , 1 , file);
 
-	//write encrypted pass
-	char* temp;
-       	temp = malloc(strlen(Pass));
-       	strcpy(temp , encrypt(Pass , EncryptionKey));
 	for(int i = 0 ; i < strlen(Pass) ; i++){
-		char byte = temp[i];
+		char byte = Pass[i] ^ EncryptionKey[i % strlen(EncryptionKey)];
 		fwrite(&byte , sizeof(char) , 1 , file);
 	}
 
@@ -41,26 +37,20 @@ int READ(char* FilePath , char* EncryptionKey){
 	}
 	unsigned int StringLength;
 	while(fread(&StringLength , sizeof(int) , 1 , file)){
-		char* line = malloc(StringLength);
-		if(fread(line , sizeof(char) , StringLength , file) < StringLength) return 2;	
+		char* line = malloc(StringLength);	
 		
-		char key = 0;
-		unsigned int KeyCounter = 0;
+		char byte = '0';
 
-		for(int i = 0 ; i < StringLength ; i++){
-			if(!key)
-				printf("%c" , line[i]);
-			else{
-				printf("%c" , line[i]^EncryptionKey[KeyCounter%strlen(EncryptionKey)]);
-				KeyCounter++;
-			}
-
-			if(line[i] == ':') {
-				key = 1;
-			}
+		while(byte != ':'){
+			fread(&byte , sizeof(char) , 1 , file);
+			printf("%c" , byte);
 		}
-		
-		printf("\n");
+		for(int i = 0 ; i < StringLength ; i++){
+			fread(&byte , sizeof(char) , 1 , file);
+			byte = byte ^ EncryptionKey[i % strlen(EncryptionKey)];
+			printf("%c" , byte);
+		}
+		printf("\n[debug] : %lu\n" , strlen(EncryptionKey));
 	}
 
 	fclose(file);
