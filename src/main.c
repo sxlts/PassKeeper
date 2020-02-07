@@ -66,9 +66,14 @@ void Read_Main(){
 		EncryptionKey = malloc(strlen(temp));
 		strcpy(EncryptionKey, temp);
 	}
-
-	if(READ(FilePath, EncryptionKey) == 0){
+	
+	char** Output = READ(FilePath, EncryptionKey); 
+	if(Output != NULL){
 		printf(GRN "Success!\n" RESET);
+
+		for(int i = 0 ; i < sizeof(Output)/sizeof(char*) - 1 ; i++){
+			printf("%s\n", Output[i]);
+		}
 	}
 	else{
 		printf(GRN "Error!\n" RESET);

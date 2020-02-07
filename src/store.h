@@ -5,5 +5,4 @@
 
 int SAVE(char* FilePath , char* FileName , char* Pass , char* EncryptionKey);
 
-int READ(char* FilePath , char* EncryptionKey);
-
+char** READ(char* FilePath , char* EncryptionKey);
