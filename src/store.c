@@ -9,10 +9,10 @@ int SAVE(char* FilePath, char* PassName, char* Pass, char* EncryptionKey){
 	}
 	
 	unsigned int PassLength = strlen(PassName) + strlen(Pass) + 1;
-	
+
 	//write length of string for reading
 	fwrite(&PassLength, sizeof(unsigned int), 1, file);
-	
+
 	//write passname
 	fwrite(PassName, sizeof(char), strlen(PassName), file);
 	
@@ -24,7 +24,8 @@ int SAVE(char* FilePath, char* PassName, char* Pass, char* EncryptionKey){
 		char byte = Pass[i] ^ EncryptionKey[i % strlen(EncryptionKey)];
 		fwrite(&byte, sizeof(char), 1, file);
 	}
-
+	
+	fclose(file);
 	return 0;
 }
 
@@ -34,20 +35,20 @@ char** READ(char* FilePath, char* EncryptionKey){
 	file = fopen(FilePath, "rb");
 	if(file == NULL){
 		return NULL;
+		printf("I/O error!\n");
 	}
 	unsigned int StringLength;
 
-	char** Output;
+	char** Output = NULL;
 	int OutCounter = 0;
-
-	while(fread(&StringLength, sizeof(int), 1, file)){
-		printf("[DEBUG] strLen = %d" , StringLength);
-
+	
+	while(fread(&StringLength, sizeof(unsigned int), 1, file)){
 		char* line = malloc(StringLength);	
 		
 		OutCounter++;
-		Output = (char**) realloc (Output , OutCounter *  sizeof(char*));
-		Output[OutCounter - 1] = malloc (StringLength + 1);
+		Output = realloc (Output , 2 * OutCounter * sizeof(char*));
+		
+		Output[OutCounter - 1] = malloc(StringLength + 1);
 
 		char byte = '0';
 		int counter = 0;
@@ -68,8 +69,6 @@ char** READ(char* FilePath, char* EncryptionKey){
 		}
 		
 		Output[OutCounter - 1][counter] = '\0';
-
-		printf("[DEBUG] %s\n" , Output[OutCounter - 1]);
 	}
 	fclose(file);
 
