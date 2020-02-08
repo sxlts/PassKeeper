@@ -15,7 +15,7 @@ void PrintHelp(){
 
 void Save_Main(char flag, char* GeneratedPass){
 	char* FilePath = malloc(256);
-	char* PassName = malloc(50);
+	char* PassName = malloc(256);
 	char* Pass = "";
 	char* EncryptionKey = "";
 	
