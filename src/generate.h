@@ -1,5 +1,3 @@
-#ifndef LOADED
-#define LOADED
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,4 +13,3 @@ bool is_strong(char* password, int size);
 
 char* generate(int size);
 
-#endif
