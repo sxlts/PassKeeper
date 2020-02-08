@@ -39,9 +39,9 @@ char* my_itoa(int n){
 int main() {
 	int solenj = 0;
 	
-	int KeySize = 5;
-	int PassSize = 50;
-	int TestCounts = 10;
+	int KeySize = 256;
+	int PassSize = 256;
+	int TestCounts = 1000;
 
 	char* temp = generate(KeySize);
 	char* Key = malloc(strlen(temp));
@@ -54,17 +54,14 @@ int main() {
 		PassArr[i] = malloc(strlen(my_itoa(i + 1)) + PassSize + 2);
 	}	
 	for (int i = 0 ; i < TestCounts ; i++){
-		printf("[DEBUG] %s\n" , my_itoa(i + 1));
 		strcat(PassArr[i], my_itoa(i + 1));
 		strcat(PassArr[i], ":");
 
 		temp = generate(PassSize);
 		strcat(PassArr[i], temp);
-		printf("[DEBUG] %s\n" , temp);
 
 		PassArr[i][strlen(my_itoa(i + 1)) + PassSize + 1] = '\0';
 
-		printf("[DEBUG] %s\n", PassArr[i]);
 		SAVE("test.bin", my_itoa(i + 1), temp, Key);
 	}
 	
