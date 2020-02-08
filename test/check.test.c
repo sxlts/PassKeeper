@@ -40,7 +40,7 @@ int main() {
 	int solenj = 0;
 	
 	int KeySize = 5;
-	int PassSize = 10;
+	int PassSize = 50;
 	int TestCounts = 10;
 
 	char* temp = generate(KeySize);
@@ -48,19 +48,23 @@ int main() {
 	strcpy(Key , temp);
 
 	char** PassArr;
-	PassArr = malloc(TestCounts*sizeof(char*));
-	
-	for (int i = 0 ; i < TestCounts ; i++){
-		PassArr[i] = malloc(strlen(my_itoa(i + 1)) + PassSize + 1);
+	PassArr = malloc(TestCounts * sizeof(char*));
 
+	for (int i = 0 ; i < TestCounts ; i++){
+		PassArr[i] = malloc(strlen(my_itoa(i + 1)) + PassSize + 2);
+	}	
+	for (int i = 0 ; i < TestCounts ; i++){
+		printf("[DEBUG] %s\n" , my_itoa(i + 1));
 		strcat(PassArr[i], my_itoa(i + 1));
 		strcat(PassArr[i], ":");
 
 		temp = generate(PassSize);
 		strcat(PassArr[i], temp);
+		printf("[DEBUG] %s\n" , temp);
 
 		PassArr[i][strlen(my_itoa(i + 1)) + PassSize + 1] = '\0';
 
+		printf("[DEBUG] %s\n", PassArr[i]);
 		SAVE("test.bin", my_itoa(i + 1), temp, Key);
 	}
 	
@@ -74,5 +78,7 @@ int main() {
 		unit_test(!strcmp(PassArr[i] , FileData[i]), "checking storing integrity");
 	}
 	
-	return report();
+	report();
+
+	return 0;
 }
