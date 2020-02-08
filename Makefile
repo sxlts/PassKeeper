@@ -17,7 +17,7 @@ $(BUILD_DIR)/$(OUTPUT): $(OBJECTS)
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c $(SOURCE_DIR)/%.h | $(BUILD_DIR)
 	gcc -c $< -o $@ $(SODIUM_OPTIONS)
 
-$(BUILD_DIR)/%.test: $(TEST_DIR)/%.test.c | $(CHAINSAW) $(BUILD_DIR)
+$(BUILD_DIR)/%.test: $(TEST_DIR)/%.test.c $(SOURCE_DIR)/%.c | $(CHAINSAW) $(BUILD_DIR)
 	gcc $^ $(CHAINSAW)/src/unittest/*.c -I$(OPT_DIR)/chainsaw/include -I$(SOURCE_DIR) -o $@ $(SODIUM_OPTIONS)
 
 $(CHAINSAW): $(OPT_DIR)
