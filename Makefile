@@ -20,6 +20,10 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c $(SOURCE_DIR)/%.h | $(BUILD_DIR)
 $(BUILD_DIR)/%.test: $(TEST_DIR)/%.test.c $(SOURCE_DIR)/%.c | $(CHAINSAW) $(BUILD_DIR)
 	gcc $^ $(CHAINSAW)/src/unittest/*.c -I$(OPT_DIR)/chainsaw/include -I$(SOURCE_DIR) -o $@ $(SODIUM_OPTIONS)
 
+test: $(BUILD_DIR)/generate.test $(BUILD_DIR)/store.test
+	./$(BUILD_DIR)/store.test
+	./$(BUILD_DIR)/generate.test
+
 $(CHAINSAW): $(OPT_DIR)
 	git clone git@github.com:soleni/chainsaw.git $(CHAINSAW)
 

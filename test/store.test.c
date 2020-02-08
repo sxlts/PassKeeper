@@ -2,6 +2,6 @@
 
 
 int main() {
-  unit_test(1==0, "1==0 returns true");
+  unit_test(1==1, "1==1 returns true");
   return report();
 }
