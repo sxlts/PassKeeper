@@ -32,7 +32,7 @@ void Save_Main(char flag, char* GeneratedPass){
 	Pass = malloc(strlen(GeneratedPass));
 	strcpy(Pass, GeneratedPass);
 
-	while(strlen(Pass) == 0 && flag == 0){
+	while(strlen(Pass) == 0){
 		temp = getpass(YEL "Give password : " RESET);
 		Pass = malloc(strlen(temp));
 		strcpy(Pass, temp);
@@ -44,10 +44,7 @@ void Save_Main(char flag, char* GeneratedPass){
 		strcpy(EncryptionKey, temp);
 	}
 
-	if(SAVE(FilePath, PassName, Pass, EncryptionKey) == 0){
-		printf(CYN "[DEBUG]: %s, %s, %s, %s\n" RESET, FilePath, PassName, Pass, EncryptionKey);
-	}
-	else{
+	if(SAVE(FilePath, PassName, Pass, EncryptionKey) != 0){
 		printf(RED "FILE I/O ERROR!\n" RESET);
 	}
 }
@@ -70,9 +67,11 @@ void Read_Main(){
 	char** Output = READ(FilePath, EncryptionKey); 
 	if(Output != NULL){
 		printf(GRN "Success!\n" RESET);
-
-		for(int i = 0 ; i < sizeof(Output)/sizeof(char*) - 1 ; i++){
+		
+		int i = 0;
+		while(Output[i] != NULL){
 			printf("%s\n", Output[i]);
+			i++;
 		}
 	}
 	else{
@@ -114,6 +113,6 @@ int main(int argc, char **argv){
 		Save_Main(NEW, "");
 	}
 	if(strcmp(argv[1],"read") == 0){
-		Read_Main(argc, argv);
+		Read_Main();
 	}
 }
