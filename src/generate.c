@@ -7,7 +7,8 @@ char* generate(int size){
     	}
 
 	char* password;
-	password = malloc (size);
+	password = malloc (size + 1);
+	password[size] = '\0';
 
 	srand(time(NULL));
 
