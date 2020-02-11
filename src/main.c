@@ -6,14 +6,11 @@
 #include <string.h>
 #include <unistd.h>
 
-#define NEW 0
-#define PASS 1
-
 void PrintHelp(){
        printf(YEL "Usage:\n	generate [size] [name]\n	ecrypt\n	exit\n" RESET);
 }
 
-void Save_Main(char flag, char* GeneratedPass){
+void Save_Main(char* GeneratedPass){
 	char* FilePath = malloc(256);
 	char* PassName = malloc(256);
 	char* Pass = "";
@@ -97,7 +94,7 @@ void Generate_Main(int argc, char **argv){
 	scanf("%c", &answer);
 
 	if(answer == 'Y' || answer == 'y'){
-		Save_Main(PASS, Pass);
+		Save_Main(Pass);
 	}
 }
 
@@ -110,7 +107,7 @@ int main(int argc, char **argv){
 		Generate_Main(argc, argv);
         }
 	if(strcmp(argv[1],"save") == 0){
-		Save_Main(NEW, "");
+		Save_Main("");
 	}
 	if(strcmp(argv[1],"read") == 0){
 		Read_Main();
