@@ -5,6 +5,8 @@
 <h3 align="center">Application for secure password storage</h3>
 
 # Build
+You must have [libsodium](https://github.com/jedisct1/libsodium) installed before compiling!
+
 To build app simply do:
 ```bash
 $ make
