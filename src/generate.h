@@ -9,7 +9,7 @@
 #define ALPHABET_SIZE 94
 
 
-bool is_strong(char* password, int size);
+bool is_strong(char* password);
 
 char* generate(int size);
 
